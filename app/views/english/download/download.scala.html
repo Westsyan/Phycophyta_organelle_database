@@ -1,0 +1,159 @@
+@()(implicit session: Session)
+@english.home.main("Mitochondria Genome") {
+
+        <style>
+
+
+
+                .pull-left .search input {
+                    height: 30px;
+                }
+
+
+                a{
+                color:cornflowerblue;
+            }
+
+        </style>
+
+        <hgroup class="page-head">
+            <h2>
+                <span>Download</span>
+            </h2>
+        </hgroup>
+
+
+        <div id="container" class="clearfix">
+            <div id="content" class="full-width">
+                <div class="tabs-container" style="padding: 10px">
+
+                    <div id="checkbox" class="checkbox">
+                    </div>
+
+                    <button type="button" class="btn btn-primary" onclick="DownloadSelectCSV('csv')">Download CSV</button>
+                    <button type="button" class="btn btn-primary" onclick="DownloadSelectCSV('fasta')">Download Genome</button>
+
+                    <button type="button" class="btn btn-primary" onclick="DownloadSelectCSV('cds')">Download CDS</button>
+                    <button type="button" class="btn btn-primary" onclick="DownloadSelectCSV('pep')">Download PEP</button>
+                    <div id="toolbar">
+                            &nbsp;
+                            Keyword：
+                    </div>
+
+                    <table class="display table table-bordered" id="table" data-pagination="true" data-search="true"
+                    data-toolbar="#toolbar" data-page-list="[10, 25, 50, 100, all]" data-search-align="left" data-multiple-search="true">
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script>
+
+
+
+        $(function () {
+
+
+                    $('#table').bootstrapTable({
+                        columns: [
+                            [{
+                                checkbox: true,
+                                align: 'center'
+                            }, {
+                                field: "species",
+                                title: "Species",
+                                align: "center",
+                                halign: "center",
+                                valign: "middle",
+                                formatter: function (value, row) {
+                                    return "<a href='/US/PODB/mitochondria/moreInfo?id=" + row.id + "' target='_blank' style='color: cornflowerblue;'>" + row.species + "</a>"
+                                }
+                            }, {
+                                field: "orf",
+                                title: "ORF Function",
+                                align: "center",
+                                halign: "center",
+                                valign: "middle",
+                                formatter: function (value, row) {
+                                    return "<a target='_blank' href='/PODB/download/download?file=" + row.id + ".csv' style='color: cornflowerblue;'>  CSV <i class='fa fa-download'></i></a> ";
+                                }
+                            }, {
+                                field: "genome",
+                                title: "Genome",
+                                align: "center",
+                                halign: "center",
+                                valign: "middle",
+                                formatter: function (value, row) {
+                                    return "<a target='_blank' href='/PODB/download/download?file=" + row.id + ".fasta' style='color: cornflowerblue;'>Fasta <i class='fa fa-download'></i></a> ";
+                                }
+                            }, {
+                                field: "gb",
+                                title: "Genbank",
+                                align: "center",
+                                halign: "center",
+                                valign: "middle",
+                                formatter: function (value, row) {
+                                    var array = row.genbank.split(";");
+                                    var location = "";
+                                    $.each(array, function (index, value) {
+                                        var w = "";
+                                        if (array.length > 1) {
+                                            w = "_" + (index + 1)
+                                        }
+                                        location += "<a target='_blank' href='/PODB/download/download?file=" + row.id + w + ".gb'>" + value + "</a><br/>";
+                                    });
+                                    return location;
+                                }
+                            },
+                                {
+                                    field: "cds",
+                                    title: "CDS",
+                                    align: "center",
+                                    halign: "center",
+                                    valign: "middle",
+                                    formatter: function (value, row) {
+                                        return "<a target='_blank' href='/PODB/download/download?file=" + row.id + ".cds' style='color: cornflowerblue;'>Fasta <i class='fa fa-download'></i></a> ";
+                                    }
+                                }, {
+                                field: "pep",
+                                title: "PEP",
+                                align: "center",
+                                halign: "center",
+                                valign: "middle",
+                                formatter: function (value, row) {
+                                    return "<a target='_blank' href='/PODB/download/download?file=" + row.id + ".pep' style='color: cornflowerblue;'>Fasta <i class='fa fa-download'></i></a> ";
+                                }
+                            }]]
+
+                    });
+
+
+
+                    $.ajax({
+                        url: "@routes.MitochondriaController.getAllMitochondria()",
+                        type: "post",
+                        success: function (data) {
+                            $('#table').bootstrapTable("load", data);
+                        }
+                    });
+
+        });
+
+
+
+        function DownloadSelectCSV(obj) {
+           var data =$("#table").bootstrapTable("getAllSelections");
+            var id = [];
+            $.each(data,function (i,v) {
+                id.push(v.id);
+            });
+            window.open("/PODB/download/downloadSelect?ids=" + id + "&types=" + obj);
+        }
+
+
+
+        </script>
+
+
+}

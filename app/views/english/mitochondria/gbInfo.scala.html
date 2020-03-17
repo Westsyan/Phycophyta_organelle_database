@@ -1,0 +1,598 @@
+@import models.Tables.MitochondriaRow
+@import models.Tables.MitochogenomeRow
+@(row: MitochondriaRow, gene: MitochogenomeRow)(implicit session: Session)
+@english.home.main("") {
+
+
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("mscroll/css/lz_index.css")">
+
+    <style>
+
+            a {
+                color: cornflowerblue;
+            }
+
+            th {
+                width: 20%;
+            }
+
+            .myBold {
+            }
+
+            .myTd {
+                max-height: 150px;
+                overflow: auto;
+                padding-right: 25px;
+            }
+
+            .js-plotly-plot .plotly .cursor-crosshair {
+                cursor: default;
+            }
+
+            .area_img {
+                float: left;
+                padding-right: 10px;
+            }
+
+    </style>
+
+    <hgroup class="page-head">
+        <h2><span>Detail info</span></h2>
+    </hgroup>
+    @for(gen <- Array(gene.name); gb = gene.name.split('.').head) {
+        <div id="container" class="clearfix" >
+            <div id="content" class="full-width container">
+
+                <div class="box">
+                    <h4 class="area">
+                        <div class="area_img">
+                            <i class="fa fa-minus"></i>
+                        </div>
+                        <span class="area_title" data-id="1">Basic</span>
+
+                    </h4>
+                    <div class="picture_list">
+
+                        <table class="table table-striped table-hover table-bordered" style="table-layout: fixed;
+                            float: left;
+                            word-wrap: break-word">
+                            <tbody>
+                                <tr>
+                                    <th rowspan="13" style="width: 50%;
+                                        vertical-align: middle;
+                                        text-align: center" >
+                                        <img src="/PODB/utils/getImageByPhotoId?name=@{
+                                            row.id
+                                        }.png"
+                                        style='color: cornflowerblue;
+                                            max-height: 500px'/>
+                                    </th>
+                                    <th>Species</th>
+                                    <td>
+                                        <a href='javascript:searchSpecies("@row.species.split(" ").init.mkString(" ")")' style='font-style: italic'>@row.species.split(" ").init.mkString(" ")</a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>Phylumn</th>
+                                    <td>
+                                        <a href='javascript:postOpenWindow("@row.phylum.split(" ").init.mkString(" ")")' style='font-style: italic'>@row.phylum.split(" ").init.mkString(" ")</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Class</th>
+                                    <td>
+                                        <a href='javascript:postOpenWindow("@row.classes.split(" ").init.mkString(" ")")' style='font-style: italic'>@row.classes.split(" ").init.mkString(" ")</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Order</th>
+                                    <td>
+                                        <a href='javascript:postOpenWindow("@row.order.split(" ").init.mkString(" ")")' style='font-style: italic'>@row.order.split(" ").init.mkString(" ")</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Family</th>
+                                    <td>
+                                        <a href='javascript:postOpenWindow("@row.family.split(" ").init.mkString(" ")")' style='font-style: italic'>@row.family.split(" ").init.mkString(" ")</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Genus</th>
+                                    <td>
+                                        <a href='javascript:searchGenus("@row.genus.split(" ").init.mkString(" ")")' style='font-style: italic'>@row.genus.split(" ").init.mkString(" ")</a>
+                                    </td>
+                                </tr>
+
+@*                                <tr>
+                                    <th>Database</th>
+                                    <td>
+
+                                    @for(x <- row.genbank.split(";")) {
+                                        <p style="margin-bottom: 0"><a style="color: #4DA4B7;">@x</a></p>
+                                    }
+                                    </td>
+                                </tr>*@
+                                <tr>
+                                    <th>BP</th>
+                                    <td>
+                                    @gene.length
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Pubmed</th>
+                                    <td>
+                                    @row.refPubmed
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Journal</th>
+                                    <td>
+                                    @row.refJournal
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Title</th>
+                                    <td>
+                                    @row.refTitle
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Reference</th>
+                                    <td>
+                                    @row.refAuthors
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>Download</th>
+                                    <td>
+                                        <a target="_blank" href="/PODB/download/download?file=@{
+                                            row.id
+                                        }.cds">
+                                        @{
+                                            row.species.split(" ").init.mkString("_")
+                                        }.cds</a>
+                                        </br>
+                                        <a target="_blank" href="/PODB/download/download?file=@{
+                                            row.id
+                                        }.pep">
+                                        @{
+                                            row.species.split(" ").init.mkString("_")
+                                        }.pep</a>
+                                        </br>
+                                        <a target="_blank" href="/PODB/download/download?file=@{
+                                            row.id
+                                        }.fasta">
+                                        @{
+                                            row.species.split(" ").init.mkString("_")
+                                        }.fasta</a>
+                                        </br>
+                                        <a target="_blank" href="/PODB/download/download?file=@{
+                                            row.id
+                                        }.csv">
+                                        @{
+                                            row.species.split(" ").init.mkString("_")
+                                        }.csv</a>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+                <div class="box" id="circle">
+                    <h4 class="area">
+                        <div class="area_img">
+                            <i class="fa fa-minus"></i>
+                        </div>
+                        <span class="area_title" data-id="1">Circle</span>
+                    </h4>
+                    <div class="picture_list">
+
+                        <img src="/PODB/utils/getImageByPhotoId?name=@{
+                            gen.trim
+                        }_ogdraw.jpg"
+                        style="float: left;
+                            width: 50%">
+
+                        <table class="table table-hover table-striped table-bordered" style="float: left;
+                            width: 50%">
+
+                            <tbody>
+                                <tr>
+                                    <th style="width: 40%;">Species</th>
+                                    <td>@row.species.split(" ").init.mkString(" ")</td>
+                                </tr>
+                                <tr>
+                                    <th>Database</th>
+                                    <td>@gen</td>
+                                </tr>
+                                <tr>
+                                    <th>Length(bp)</th>
+                                    <td>@gene.length</td>
+                                </tr>
+                                <tr>
+                                    <th>GC%</th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>ATP synthase genes</th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>NADH dehydrogenase genes</th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>ribosomal protein genes</th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>ORF</th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>tRNA genes</th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>rRNA genes</th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>Other genes</th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>Total genes</th>
+                                    <td></td>
+                                </tr>
+                                @if(row.genbank.split(";").length > 1){
+
+                                <tr>
+                                    <th>Other database</th>
+                                    <td>
+                                    <a href="/US/PODB/mitochondria/gbInfoByName?name=@{row.genbank.split(";").filter(_!= gene.name).head}"
+                                    target="_blank">
+                                        @{row.genbank.split(";").filter(_!= gene.name)}
+                                    </a>
+                                    </td>
+                                </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+
+
+                <div class="box">
+                    <h4 class="area" id="genomeb-@gb" onclick="reloadGbrowser('@gb')">
+                        <div class="area_img">
+                            <i class="fa fa-minus"></i>
+                        </div>
+                        <span class="area_title" data-id="1">Genome Browse</span>
+                    </h4>
+                    <div class="picture_list">
+                        <iframe style="border: 1px solid rgb(80, 80, 80);" src="http://210.22.121.250:20795/jb/index.html?data=my_data/PODB/@row.species.split(" ").init.mkString("_")/data&loc=@gb&tracks=DNA,Annotation&tracklist=0&nav=1&overview=0"
+                        height="250" width="100%" name="jbrowse_iframe" id="iframe-@gb">
+                </iframe>
+
+                    </div>
+                </div>
+
+                <div class="box">
+                    <h4 class="area" >
+                        <div class="area_img">
+                            <i class="fa fa-minus"></i>
+                        </div>
+                        <span class="area_title" data-id="1">Geographical distribution</span>
+                    </h4>
+                    <div class="picture_list">
+                        <div id="worldmap" style="float: left;
+                            width: 50%"></div>
+                        <table class="table table-hover table-striped table-bordered" style="float: left;
+                            width: 50%">
+                            <tbody>
+                                <tr>
+                                    <th style="width: 40%;">Collection places</th>
+                                    <td>@row.location</td>
+                                </tr>
+                                <tr>
+                                    <th>Collection date</th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>GPS</th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>Collection people</th>
+                                    <td></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+
+
+
+                <div class="box">
+                    <h4 class="area">
+                        <div class="area_img">
+                            <i class="fa fa-minus"></i>
+                        </div>
+                        <span class="area_title" data-id="1"> Gene </span>
+                    </h4>
+                    <div class="picture_list">
+                        <table class="table table-striped table-hover table-bordered" id="table1-@gb" style="table-layout: fixed;
+                            word-wrap: break-word" data-pagination="true" data-search="true"
+                        data-toolbar="#toolbar" data-page-list="[10, 25, 50, 100, all]" data-search-align="left" data-multiple-search="true">
+                            <thead>
+                                <th data-field="geneid" data-sortable="true">Gene Name</th>
+                                <th data-field="start" data-sortable="true">Start</th>
+                                <th data-field="end" data-sortable="true">End</th>
+                                <th data-field="strand" data-sortable="true">Strand</th>
+                                <th data-field="genbank" data-sortable="true">GenBank</th>
+                            </thead>
+                        </table>
+
+                    </div>
+                </div>
+
+                <div class="box" id="orf">
+                    <div id="orf-@gb" style="display: none">
+
+                        <h4 class="area">
+                            <div class="area_img">
+                                <i class="fa fa-minus"></i>
+                            </div>
+                            <span class="area_title" data-id="1">ORF Function</span>
+                        </h4>
+                        <div class="picture_list">
+
+                            <label>Select the columns to display:</label>
+                            <div id="checkbox-@gb" class="checkbox">
+                    </div>
+                            <div id="toolbar">
+                                    &nbsp;
+                                    Keyword：
+                            </div>
+                            <table class="table table-striped table-hover table-bordered" id="table-@gb" style="table-layout: fixed;
+                                word-wrap: break-word" data-pagination="true" data-search="true"
+                            data-toolbar="#toolbar" data-page-list="[10, 25, 50, 100, all]" data-search-align="left" data-multiple-search="true">
+                                <thead>
+                                    <th data-field="name" data-sortable="true">Name</th>
+                                    <th data-field="types" data-sortable="true">Type</th>
+                                    <th data-field="minimum" data-sortable="true">Minimum</th>
+                                    <th data-field="maximun" data-sortable="true">Maximum</th>
+                                    <th data-field="length" data-sortable="true">Length</th>
+                                    <th data-field="direction" data-sortable="true">Direction</th>
+                                    <th data-field="document" data-sortable="true">Document Name</th>
+                                    <th data-field="seq" data-sortable="true">Sequence</th>
+                                    <th data-field="intervals" data-sortable="true">Intervals</th>
+                                    <th data-field="track" data-sortable="true">Track Name</th>
+                                    <th data-field="product" data-sortable="true">Product</th>
+                                    <th data-field="translation" data-sortable="true">Translation</th>
+                                    <th data-field="gene" data-sortable="true">Gene</th>
+                                    <th data-field="seq_name" data-sortable="true">Sequence Name</th>
+                                    <th data-field="db_xref" data-sortable="true">DB Xref</th>
+                                    <th data-field="locustag" data-sortable="true">Locus Tag</th>
+                                    <th data-field="proteinid" data-sortable="true">Protein ID</th>
+                                </thead>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    }
+
+
+    <script src="@routes.Assets.versioned("mscroll/js/mscroll.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("Highmaps-6.1.0/highmaps.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("Highmaps-6.1.0/exporting.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("Highmaps-6.1.0/data.js")" type="text/javascript"></script>
+    <script>
+
+            $(function () {
+
+
+                var array = ["Minimum", "Maximum", "Length", "Direction", "Document Name", "Sequence", "Intervals",
+                    "Track Name", "Product", "Translation", "Gene", "Sequence Name", "DB Xref", "Locus Tag", "Protein ID"];
+                var values = ["minimum", "maximun", "length", "direction", "document", "seq", "intervals",
+                    "track", "product", "translation", "gene", "seq_name", "db_xref", "locustag", "proteinid"];
+
+
+                $.ajax({
+                    url: "/PODB/mitochondria/getCsvBySpeciesId?id=" + @row.id,
+                    type: "post",
+                    success: function (data) {
+                        $.each(data, function (i, v) {
+
+                            if (v.data.length !== 0) {
+                                var html = "";
+                                $.each(array, function (n, value) {
+                                            html += "<label style='margin-right: 15px'>" +
+                                                    "<input type='checkbox' checked='checked' value='" + values[n] + "' onclick=\"setColumns('" + v.gb + "','" + values[n] + "')\">" + value +
+                                                    "</label>"
+                                        }
+                                );
+
+                                $("#checkbox-" + v.gb).append(html);
+
+                                $("#table-" + v.gb).bootstrapTable({data: v.data});
+
+
+                                var hiddenArray = ["seq", "intervals",
+                                    "track", "translation"];
+
+                                $.each(hiddenArray, function (n, value) {
+                                            $('#table-' + v.gb).bootstrapTable('hideColumn', value);
+                                            $("input:checkbox[value=" + value + "]").attr("checked", false)
+                                        }
+                                );
+                                $("#orf-" + v.gb).show();
+
+                            }
+
+                        });
+                    }
+                });
+
+                $.ajax({
+                    url: "/PODB/mitochondria/getAllGeneBySpecies?species=" + @row.id,
+                    type: "post",
+                    success: function (data) {
+                        $.each(data, function (i, v) {
+                            $("#table1-" + v.gb).bootstrapTable({data: v.tdata})
+                        })
+                    }
+                })
+
+
+                // 地图路径，参考 https://img.hcharts.cn/mapdata/index.html
+                var map = getMapName('map'),
+                        url = '/assets/Highmaps-6.1.0/world.js';
+
+                // 动态加载地图数据文件并生成图表。
+                loadScript(url, function () {
+                    // 生成随机数据
+                    var mapdata = Highcharts.maps[map.path],
+                            data = [];
+
+
+                    function drawMap(datas) {
+                        Highcharts.each(datas, function (v, i) {
+                            data.push({
+                                'hc-key': v.key,
+                                value: v.num
+                            })
+                        })
+
+                        // 初始化图表
+                        $('#worldmap').highcharts('Map', {
+                            title: {
+                                text: map.cname || map.name
+                            },
+                            subtitle: {
+                                text: ''
+                            },
+                            mapNavigation: {
+                                enabled: true,
+                                enableMouseWheelZoom: false,
+                                buttonOptions: {
+                                    verticalAlign: 'bottom'
+                                }
+                            },
+                            credits: {
+                                enabled: false
+                            },
+                            colorAxis: {
+                                min: 0,
+                                stops: [
+                                    [0, '#EFEFFF'],
+                                    [0.5, Highcharts.getOptions().colors[0]],
+                                    [1, Highcharts.Color(Highcharts.getOptions().colors[0]).brighten(-0.5).get()]
+                                ]
+                            },
+                            series: [{
+                                data: data,
+                                mapData: mapdata,
+                                joinBy: 'hc-key',
+                                name: '物种数',
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                states: {
+                                    hover: {
+                                        color: '#a4edba'
+                                    },
+                                    select: {
+                                        color: 'orange',
+                                        borderColor: 'black',
+                                        dashStyle: 'shortdot'
+                                    }
+                                },
+                                tooltip: {
+                                    useHTML: true,
+                                    headerFormat: '',
+                                    pointFormat: ' {point.properties.name}',
+                                    footerFormat: ''
+                                }
+                            }]
+                        });
+                    }
+
+                    $.ajax({
+                        url: "/US/PODB/mitochondria/getLocation?id=" + @row.id,
+                        type: "get",
+                        success: function (datas) {
+                            drawMap(datas)
+                        }
+                    })
+
+
+                });
+
+
+            });
+
+            function setColumns(gb, value) {
+                var element = $("input:checkbox[value=" + value + "]");
+
+                if (element.is(":checked")) {
+                    $('#table-' + gb).bootstrapTable('showColumn', value);
+                } else {
+                    $('#table-' + gb).bootstrapTable('hideColumn', value);
+                }
+            }
+
+            function reloadGbrowser(obj) {
+                $("#iframe-" + obj).attr('src', $("#iframe-" + obj).attr('src'));
+            }
+
+            function postOpenWindow(value) {
+                var form = $("<form method='post' target='_blank' action='https://www.algaebase.org/search/taxonomy/'></form>");
+                form.append("<input name='currentMethod' type='hidden' value='taxa' />");
+                form.append("<input name='fromSearch' type='hidden' value='yes' />");
+                form.append("<input name='htax_taxon' type='text' value='" + value + "'>");
+                $(document.body).append(form);
+                form.submit();
+            }
+
+            function searchGenus(value) {
+                var form = $("<form method='post' target='_blank' action='https://www.algaebase.org/search/genus/'></form>");
+                form.append("<input name='currentMethod' type='hidden' value='genera' />");
+                form.append("<input name='fromSearch' type='hidden' value='yes' />");
+                form.append("<input name=\"displayCount\" type=\"hidden\" value=\"20\">");
+                form.append("<input name=\"genus_op\" type=\"hidden\" value=\"cn\">");
+                form.append("<input name='genus' type='text' value='" + value + "'>");
+                $(document.body).append(form);
+                form.submit();
+            }
+
+            function searchSpecies(value) {
+                var form = $("<form method='post' target='_blank' action='https://www.algaebase.org/search/species/'></form>");
+                form.append("<input name='currentMethod' type='hidden' value='species' />");
+                form.append("<input name='fromSearch' type='hidden' value='yes' />");
+                form.append("<input name=\"displayCount\" type=\"hidden\" value=\"20\">");
+                form.append("<input name=\"sortBy\" type=\"hidden\" value=\"genus\">");
+                form.append("<input name=\"sortBy2\" type=\"hidden\" value=\"species\">");
+                form.append("<input name='name' type='text' value='" + value + "'>");
+                $(document.body).append(form);
+                form.submit();
+            }
+
+    </script>
+
+}

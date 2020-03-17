@@ -1,0 +1,115 @@
+@()(implicit session: Session)
+@english.home.main("Mitochondria Genome") {
+
+    <style>
+
+
+
+    .pull-left .search input{
+        height:30px;
+        }
+
+
+
+    </style>
+
+    <hgroup class="page-head">
+        <h2>
+            <span>ORF</span> Function
+        </h2>
+    </hgroup>
+
+
+    <div id="container" class="clearfix">
+        <div id="content" class="full-width">
+            <div class="tabs-container" style="padding: 10px">
+
+                <div id="checkbox" class="checkbox">
+                </div>
+
+                <div id="toolbar">
+                        &nbsp;
+                        Keyword：
+                </div>
+
+                <table class="display table table-bordered" id="table" data-pagination="true" data-search="true"
+                data-toolbar="#toolbar" data-page-list="[10, 25, 50, 100, all]" data-search-align="left" data-multiple-search="true">
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+  <script>
+
+    $(function () {
+
+
+        $('#table').bootstrapTable({
+            columns: [
+                [{
+                    field: "id",
+                    title: "ID",
+                    align: "center",
+                    halign: "center",
+                    valign: "middle",
+                    formatter: function (value, row) {
+                        return "<a href='/US/PODB/mitochondria/gbInfo?id=" + row.id + "#orf' target='_blank' style='color: cornflowerblue;'>MT"+ row.geneid + "</a>";
+                    }
+                },{
+                    field: "species",
+                    title: "Species",
+                    align: "center",
+                    halign: "center",
+                    valign: "middle"
+                }, {
+                    field: "phylum",
+                    title: "Phylum",
+                    align: "center",
+                    halign: "center",
+                    valign: "middle"
+                }, {
+                    field: "class",
+                    title: "Class",
+                    align: "center",
+                    halign: "center",
+                    valign: "middle"
+                }, {
+                    field: "order",
+                    title: "Order",
+                    align: "center",
+                    halign: "center",
+                    valign: "middle"
+                }, {
+                    field: "family",
+                    title: "Family",
+                    align: "center",
+                    halign: "center",
+                    valign: "middle"
+                }, {
+                    field: "genus",
+                    title: "Genus",
+                    align: "center",
+                    halign: "center",
+                    valign: "middle"
+                }]]
+
+        });
+
+
+        $.ajax({
+            url: "@routes.MitochondriaController.getAllMitochondria()",
+            type: "post",
+            success: function (data) {
+                $('#table').bootstrapTable("load", data);
+            }
+        });
+
+    });
+
+
+
+    </script>
+
+
+}

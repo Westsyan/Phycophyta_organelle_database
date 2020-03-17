@@ -1,0 +1,123 @@
+<style>
+    .top-logo {
+        color: #CCCECE;
+        font-size: 20px;
+        line-height: 40px
+    }
+</style>
+
+<header id="header">
+
+        <!-- Website Logo Place -->
+    <div id="logo-container">
+        <p style="color: #419AAD;
+            font-size: 35px;">POD</p>
+        <span class="tagline">Phycophyta Organelle Database</span>
+
+    </div>
+
+    <ul class="social-nav" style="text-align: center">
+        <li class="rss">
+            <a><button type="button" style="background-color: transparent;
+                border: transparent" class="top-logo">中</button>
+            </a>
+        </li>
+        @* <li class="rss"><a target="_blank" href="#"><i class="fa fa-envelope-o top-logo"></i></a></li>
+        <li class="phone" style="line-height: 40px;"><i class="fa fa-phone top-logo" style="float: left;margin-left: 10px;" ></i><span>180.0123.4567</span></li>
+        *@ </ul>
+
+
+    <nav class="main-nav clearfix">
+
+            <!-- MAIN NAVIGATION -->
+        <div class="menu-div">
+            <ul>
+                <li>
+                    <a href="@routes.HomeController.homeUS()">Home</a>
+                </li>
+                <li>
+                    <a href="#">cpGenome</a>
+                    <ul>
+                        <li><a href="@routes.ChloroplastController.gbGenomePage()">Genome</a></li>
+                        <li><a href="#">Circle</a></li>
+                        <li><a href="#">ORF</a></li>
+                        <li><a href="@routes.MitochondriaController.mapBefore("0")">Geographical distribution</a></li>
+                        <li><a href="#">Genome Browser</a></li>
+                        @* <li><a href="@routes.ToolsController.blastBefore()">BLAST</a></li>
+                        <li><a href="@routes.ToolsController.seqFetchBefore()">Sequences Fetch</a></li>*@
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">mtGenome</a>
+                    <ul>
+                        <li><a href="@routes.MitochondriaController.mitochondriaGenomeBefore()">Genome</a></li>
+                        <li><a href="@routes.MitochondriaController.circleBeforeUS()">Circle</a></li>
+                        <li><a href="@routes.MitochondriaController.orfBeforeUS()">ORF</a></li>
+                        <li><a href="@routes.MitochondriaController.mapBefore("0")">Geographical distribution</a></li>
+                        <li><a href="@routes.MitochondriaController.jbBeforeUS()">Genome Browser</a></li>
+                        @* <li><a href="@routes.ToolsController.blastBefore()">BLAST</a></li>
+                        <li><a href="@routes.ToolsController.seqFetchBefore()">Sequences Fetch</a></li>*@
+                    </ul>
+                </li>
+                <li>
+                    <a href="@routes.ToolsController.tool()">Tools</a>
+                    @* <ul>
+                    <li><a href="@routes.ToolsController.muscleBeforeUS()">Muscle</a></li>
+                    <li><a href="@routes.ToolsController.geneWiseBeforeUS()">GeneWise</a></li>
+                    *@@* <li><a href="@routes.ToolsController.syntenyBeforeUS()">Synteny Analysis</a></li>*@@*
+                    <li><a href="@routes.ToolsController.lastzBeforeUS()">Lastz</a></li>
+                    </ul>*@
+                </li>
+                <li>
+                    <a href="@routes.TreeController.tree()">Taxonomy Tree</a>
+                </li>
+                <li>
+                    <a href="@routes.UploadController.uploadBefore()">Submit Data</a>
+                </li>
+
+                <li>
+                    <a href="@routes.DownloadController.downloadBeforeUS()">Download</a>
+                </li>
+                <li>
+                    <a href="@routes.HomeController.reference()">Literature</a>
+                </li>
+                <li>
+                    <a href="#">Contact</a>
+                </li>
+
+                <li>
+                    <a href="#">Help</a>
+                </li>
+
+                <li>
+                    <a href="#">About</a>
+                </li>
+
+            </ul>
+        </div>
+        @* <!-- GLOBAL SEARCH -->
+        <form method="get" action="#" id="topsearch" style="width: 318px">
+        <p>
+        <select id="tsearch" style="height: 28px">
+        <option>All Database</option>
+        <option>Chloroplast Genome</option>
+        <option>Mitochondria Genome</option>
+        </select>
+        <input type="text" placeholder="Search" name="s" id="tsearch" style="height: 28px;width: 160px;float: right">
+        <button type="submit" id="topsubmit" style="top: 3px;right: 14px;font-size: 15px;color: #C0DEE6;"><i class="fa fa-search"></i> </button>
+        </p>
+        </form>*@
+    </nav>
+</header>
+
+<script>
+
+                function toChinese() {
+                    var path = window.location.pathname;
+                    var parameter = window.location.search;
+                    var path1 = path.split("/");
+                    var path2 = "/chinese/" + path1[2] + "/" + path1[3] + "/" + path1[4] + parameter;
+                    window.location.href = path2;
+                }
+
+    </script>

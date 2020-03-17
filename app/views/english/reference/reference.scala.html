@@ -1,0 +1,117 @@
+@()(implicit session: Session)
+@english.home.main("Reference") {
+
+    <style>
+            td {
+                font-size: 16px;
+            }
+
+.letter {
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    margin: 16px auto 0;
+    margin-left: 50px;
+    width: 100%;
+    min-height: 900px;
+    padding: 24px;
+    position: relative;
+}
+
+.letter:before, .letter:after {
+    content: "";
+    height: 98%;
+    position: absolute;
+    width: 100%;
+    z-index: -1;
+}
+
+.letter:before {
+    background: #fafafa;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    left: -5px;
+    top: 4px;
+    transform: rotate(-2.5deg);
+}
+
+.letter:after {
+    background: #f6f6f6;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    right: -3px;
+    top: 1px;
+    transform: rotate(1.4deg);
+}
+
+
+    </style>
+
+
+    <hgroup class="page-head">
+        <h2><span>Literature</span></h2>
+    </hgroup>
+
+    <div id="container" class="clearfix" >
+        <div id="content" class="full-width container">
+    <div class="col-sm-11">
+        <div class="letter">
+
+            <div id="toolbar"></div>
+
+            <div class="table-contain">
+                <table id="table" class="table table-hover  table-bordered table-striped" data-pagination="true" data-search="true"
+                data-toolbar="#toolbar" data-search-align="right" data-page-list="[10]" data-page-size="15"
+                data-multiple-search="true"
+                style="border: 0px solid transparent;">
+                    <thead>
+                        <tr>
+                            <th data-field="download">Download</th>
+                            <th data-field="reference">Reference</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+        </div>
+        </div>
+    <script>
+
+            $(function () {
+
+
+                $.ajax({
+                    url: "#",
+                    type: "post",
+                    success: function (data) {
+                        $("#table").bootstrapTable({
+                            data: data,
+                            columns: [
+                                {
+                                    field: "download",
+                                    title: "Download",
+                                    align: "center",
+                                    valign: "middle",
+                                    formatter: function (value, row) {
+                                        return "<p><a href='/MRDB/utils/downloadPdf?file=" + row.reference + "' target='_blank'><i class='fa fa-download'></i></a></p>";
+                                    }
+                                },
+                                {
+                                    field: "reference",
+                                    title: "Reference",
+                                    valign: "middle",
+                                    formatter: function (value, row) {
+                                        return "<p><a href='/MRDB/utils/openPdf?file=" + row.reference + "' target='_blank'>" + row.reference + "</a></p>";
+                                    }
+                                }
+                            ]
+                        })
+                    }
+
+                })
+            })
+
+
+    </script>
+
+
+}

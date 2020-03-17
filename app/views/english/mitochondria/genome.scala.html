@@ -1,0 +1,280 @@
+@()(implicit session: Session)
+@english.home.main("Mitochondria Genome") {
+
+    <style>
+
+
+
+    .pull-left .search input{
+        height:30px;
+        }
+
+    a{
+        color:cornflowerblue;
+    }
+
+    </style>
+
+    <hgroup class="page-head">
+        <h2>
+            <span>Mitochondria</span>
+            Genome
+        </h2>
+    </hgroup>
+
+
+    <div id="container" class="clearfix">
+        <div id="content" class="full-width">
+            <div class="tabs-container" style="padding: 10px">
+
+                <label>Select the columns to display:</label>
+                <div id="checkbox" class="checkbox">
+                </div>
+
+                <div id="toolbar">
+                        &nbsp;
+                        Keyword：
+                </div>
+
+                <table class="display table table-bordered" id="table" data-pagination="true" data-search="true"
+                data-toolbar="#toolbar" data-page-list="[10, 25, 50, 100, all]" data-search-align="left" data-multiple-search="true">
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+  <script>
+
+    $(function () {
+        var array = ["Phylum", "Class", "Order", "Family", "Genus", "Collection places",
+            "BP", "Pubmed", "Journal", "Title", "Authors"];
+        var values = ["phylum", "class", "order", "family", "genus", "location",
+            "bp", "ref_pubmed", "ref_journal", "ref_title", "ref_authors"];
+        var tHtml = "";
+
+        var html = "";
+        $.each(array, function (n, value) {
+                    html += "<label style='margin-right: 15px'>" +
+                            "<input type='checkbox' checked='checked' value='" + values[n] + "' onclick=\"setColumns('" + values[n] + "')\">" + value +
+                            "</label>"
+                }
+        );
+        $("#checkbox").append(html);
+
+        $('#table').bootstrapTable({
+            columns: [
+                [{
+                    field: "id",
+                    title: "ID",
+                    align: "center",
+                    halign: "center",
+                    valign: "middle",
+                    formatter: function (value, row) {
+                        return "<a href='/US/PODB/mitochondria/gbInfo?id=" + row.id + "' target='_blank' style='color: cornflowerblue;'>MT"  + row.geneid + "</a>";
+                    }
+                }, {
+                    field: "name",
+                    title: "Name",
+                    align: "center",
+                    halign: "center",
+                    valign: "middle"
+                },
+                   {
+                    field: "images",
+                    title: "Images",
+                    align: "center",
+                    halign: "center",
+                    valign: "middle",
+                    width:"200px",
+                    formatter: function (value, row) {
+                        return "<img src='/PODB/utils/getImageByPhotoId?name=" + row.imgid + "_min.png' style='color: cornflowerblue;'/>"
+                    }
+                },  {
+                    field: "phylum",
+                    title: "Phylum",
+                    align: "center",
+                    halign: "center",
+                    valign: "middle",
+                    formatter:function (value,row) {
+                        return "<a href='javascript:postOpenWindow(\"" + row.phylum + "\")'  style='font-style: italic'>" + row.phylum + "</a>"
+                    }
+                }, {
+                    field: "class",
+                    title: "Class",
+                    align: "center",
+                    halign: "center",
+                    valign: "middle",
+                    formatter:function (value,row) {
+                        return "<a href='javascript:postOpenWindow(\"" + row.class + "\")'  style='font-style: italic'>" + row.class + "</a>"
+                    }
+                }, {
+                    field: "order",
+                    title: "Order",
+                    align: "center",
+                    halign: "center",
+                    valign: "middle",
+                    formatter:function (value,row) {
+                        return "<a href='javascript:postOpenWindow(\"" + row.order + "\")'  style='font-style: italic'>" + row.order + "</a>"
+                    }
+                }, {
+                    field: "family",
+                    title: "Family",
+                    align: "center",
+                    halign: "center",
+                    valign: "middle",
+                    formatter:function (value,row) {
+                        return "<a href='javascript:postOpenWindow(\"" + row.family + "\")'  style='font-style: italic'>" + row.family + "</a>"
+                    }
+                }, {
+                    field: "genus",
+                    title: "Genus",
+                    align: "center",
+                    halign: "center",
+                    valign: "middle",
+                    formatter:function (value,row) {
+                        return "<a href='javascript:searchGenus(\"" + row.genus + "\")' style='font-style: italic'>" + row.genus + "</a>"
+                    }
+                }, {
+                    field: "species",
+                    title: "Species",
+                    align: "center",
+                    halign: "center",
+                    valign: "middle",
+                    formatter:function (value,row) {
+                        return "<a href='javascript:searchSpecies(\"" + row.species + "\")' style='font-style: italic'>" + row.species + "</a>"
+                    }
+                }, {
+                    field: "location",
+                    title: "Collection places",
+                    align: "center",
+                    halign: "center",
+                    valign: "middle"
+                }, /*{
+                    field: "genbank",
+                    title: "Database",
+                    align: "center",
+                    halign: "center",
+                    valign: "middle",
+                    formatter: function (value, row) {
+                        var array = row.genbank.split(";");
+                        var link = row.ncbilink.split(";");
+                        var location = "";
+                        $.each(array, function (index, value) {
+                                location += "<a target='_blank' href='" + link[index] + "'>" + value + "</a><br/>";
+                        });
+                        return location;
+                    }
+                },*/ {
+                    field: "bp",
+                    title: "BP",
+                    align: "center",
+                    halign: "center",
+                    valign: "middle"
+                }, {
+                    field: "ref_pubmed",
+                    title: "Pubmed",
+                    align: "center",
+                    halign: "center",
+                    valign: "middle"
+                },
+                    {
+                        field: "ref_journal",
+                        title: "Journal",
+                        align: "center",
+                        halign: "center",
+                        valign: "middle"
+                    },
+                    {
+                        field: "ref_title",
+                        title: "Title",
+                        align: "center",
+                        halign: "center",
+                        valign: "middle"
+                    },
+                    {
+                        field: "ref_authors",
+                        title: "Reference",
+                        align: "center",
+                        halign: "center",
+                        valign: "middle"
+                    }]]
+
+        });
+
+
+        var hiddenArray = ["phylum", "class", "order", "family", "ref_pubmed", "ref_journal", "ref_title"];
+
+        $.each(hiddenArray, function (n, value) {
+                    $('#table').bootstrapTable('hideColumn', value);
+                    $("input:checkbox[value=" + value + "]").attr("checked", false)
+                }
+        );
+
+
+        $.ajax({
+            url: "@routes.MitochondriaController.getAllMitochondria()",
+            type: "post",
+            success: function (data) {
+                $('#table').bootstrapTable("load", data);
+            }
+        });
+
+    });
+
+
+    function postOpenWindow(value) {
+        var form = $("<form method='post' target='_blank' action='https://www.algaebase.org/search/taxonomy/'></form>");
+        form.append("<input name='currentMethod' type='hidden' value='taxa' />");
+        form.append("<input name='fromSearch' type='hidden' value='yes' />");
+        form.append("<input name='htax_taxon' type='text' value='" + value + "'>");
+        $(document.body).append(form);
+        form.submit();
+        $("form").hide();
+
+    }
+
+    function searchGenus(value) {
+        var form = $("<form method='post' target='_blank' action='https://www.algaebase.org/search/genus/'></form>");
+        form.append("<input name='currentMethod' type='hidden' value='genera' />");
+        form.append("<input name='fromSearch' type='hidden' value='yes' />");
+        form.append("<input name=\"displayCount\" type=\"hidden\" value=\"20\">");
+        form.append("<input name=\"genus_op\" type=\"hidden\" value=\"cn\">");
+        form.append("<input name='genus' type='text' value='" + value + "'>");
+        $(document.body).append(form);
+        form.submit();
+        $("form").hide();
+
+    }
+
+    function searchSpecies(value) {
+        var form = $("<form method='post' target='_blank' action='https://www.algaebase.org/search/species/'></form>");
+        form.append("<input name='currentMethod' type='hidden' value='species' />");
+        form.append("<input name='fromSearch' type='hidden' value='yes' />");
+        form.append("<input name=\"displayCount\" type=\"hidden\" value=\"20\">");
+        form.append("<input name=\"sortBy\" type=\"hidden\" value=\"genus\">");
+        form.append("<input name=\"sortBy2\" type=\"hidden\" value=\"species\">");
+        form.append("<input name='name' type='text' value='" + value + "'>");
+        $(document.body).append(form);
+        form.submit();
+        $("form").hide();
+
+    }
+
+
+
+
+    function setColumns(value) {
+        var element = $("input:checkbox[value=" + value + "]");
+
+        if (element.is(":checked")) {
+            $('#table').bootstrapTable('showColumn', value);
+        } else {
+            $('#table').bootstrapTable('hideColumn', value);
+        }
+    }
+
+    </script>
+
+
+}

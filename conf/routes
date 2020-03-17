@@ -1,0 +1,107 @@
+
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# An example controller showing a sample home page
+GET         /                                               controllers.HomeController.index
+
+GET         /US/PODB/home/home                              controllers.HomeController.homeUS
+GET         /CN/PODB/home/home                              controllers.HomeController.homeCN
+
+GET         /US/PODB/mitochondria/genomeBefore              controllers.MitochondriaController.mitochondriaGenomeBefore
+GET         /US/PODB/mitochondria/circleBefore              controllers.MitochondriaController.circleBeforeUS
+GET         /US/PODB/mitochondria/orfBefore                 controllers.MitochondriaController.orfBeforeUS
+GET         /US/PODB/mitochondria/jbBefore                  controllers.MitochondriaController.jbBeforeUS
+GET         /US/PODB/mitochondria/moreInfo                  controllers.MitochondriaController.moreInfoUS(id:Int)
+POST        /US/PODB/mitochondria/getAllMitochondria        controllers.MitochondriaController.getAllMitochondria
+GET         /US/PODB/mitochondria/moreGeneInfoUS            controllers.MitochondriaController.moreGeneInfoUS(id:Int)
+GET         /US/PODB/mitochondria/moreGeneInfo              controllers.MitochondriaController.moreGeneInfo(gene:String)
+GET         /US/PODB/mitochondria/mapBefore                 controllers.MitochondriaController.mapBefore(key:String)
+GET         /US/PODB/mitochondria/getInfoByLocation         controllers.LocationController.getInfoByLocation(location:String)
+GET         /US/PODB/mitochondria/getLocation               controllers.LocationController.getLocation(id:Int)
+GET         /US/PODB/mitochondria/getWorldData              controllers.LocationController.getWorldData
+GET         /US/PODB/mitochondria/gbInfo                    controllers.MitochondriaController.gbInfo(id:Int)
+GET         /US/PODB/mitochondria/gbInfoByName              controllers.MitochondriaController.gbInfoByName(name:String)
+
+POST        /PODB/mitochondria/getCsvBySpeciesId            controllers.MitochondriaController.getCsvBySpeciesId(id:String)
+POST        /PODB/mitochondria/getAllGeneBySpecies          controllers.MitochondriaController.getAllGeneBySpecies(species:String)
+
+
+
+GET         /US/PODB/chloroplast/chloroplastPage            controllers.ChloroplastController.chloroplastPage
+POST        /US/PODB/chloroplast/getAllChloroplast          controllers.ChloroplastController.getAllChloroplast
+POST        /US/PODB/chloroplast/getAllGbChloroplast        controllers.ChloroplastController.getAllGbChloroplast
+GET         /US/PODB/chloroplast/moreInfo                   controllers.ChloroplastController.moreInfo(id:Int)
+GET         /US/PODB/chloroplast/moreGeneInfoPage           controllers.ChloroplastController.moreGeneInfoPage(id:Int)
+GET         /US/PODB/chloroplast/gbMoreInfo                 controllers.ChloroplastController.gbMoreInfo(id:Int)
+GET         /US/PODB/chloroplast/gbGenomePage               controllers.ChloroplastController.gbGenomePage
+POST        /US/PODB/chloroplast/getAllGeneByGbId           controllers.ChloroplastController.getAllGeneByGbId(id:Int)
+POST        /US/PODB/chloroplast/getWorldPostion            controllers.ChloroplastController.getWorldPostion(id:Int)
+POST        /US/PODB/chloroplast/getSeqs                    controllers.ChloroplastController.getSeqs(gene: String, range: String)
+
+
+
+GET         /PODB/insert/insertCp                           controllers.InsertController.insertCp
+GET         /PODB/insert/insertCpgenome                     controllers.InsertController.insertCpgenome
+GET         /PODB/insert/insertCpGene                       controllers.InsertController.insertCpGene
+GET         /PODB/insert/getBlastData                       controllers.InsertController.getBlastData
+
+
+GET         /US/PODB/tools/tool                             controllers.ToolsController.tool
+GET         /US/PODB/tools/blastBefore                      controllers.ToolsController.blastBefore
+GET         /US/PODB/tools/seqFetchBefore                   controllers.ToolsController.seqFetchBefore
+GET         /US/PODB/tools/genewiseefore                    controllers.ToolsController.geneWiseBeforeUS
+GET         /US/PODB/tools/lastzBefore                      controllers.ToolsController.lastzBeforeUS
+GET         /US/PODB/tools/muscleBefore                     controllers.ToolsController.muscleBeforeUS
+GET         /US/PODB/tools/primerBefore                     controllers.ToolsController.primerBeforeUS
+GET         /US/PODB/tools/syntenyBefore                    controllers.ToolsController.syntenyBeforeUS
+
+POST        /PODB/tools/blastRun                            controllers.ToolsController.blastRun
+GET         /PODB/tools/blastResultBefore                   controllers.ToolsController.blastResultBefore(path:String,types:String)
+POST        /PODB/tools/blastResult                         controllers.ToolsController.blastResult(path:String,types:String)
+POST        /PODB/tools/seqRegion                           controllers.ToolsController.seqRegion
+POST        /PODB/tools/genewise                            controllers.ToolsController.genewise
+POST        /PODB/tools/primer                              controllers.ToolsController.primer
+POST        /PODB/tools/muscle                              controllers.ToolsController.muscle
+POST        /PODB/tools/downloadTree                        controllers.ToolsController.downloadTree
+POST        /PODB/tools/lastz                               controllers.ToolsController.lastz
+
+GET         /US/PODB/download/downloadBefore                controllers.DownloadController.downloadBeforeUS
+GET         /PODB/download/download                         controllers.DownloadController.download(file:String)
+GET         /PODB/download/downloadSelect                   controllers.DownloadController.downloadSelect(ids:String,types:String)
+
+
+GET         /PODB/utils/getImageByPhotoId                   controllers.UtilsController.getImageByPhotoId(name:String)
+GET         /PODB/utils/getCpimg                            controllers.UtilsController.getCpimg(id:Int)
+GET         /PODB/utils/getCpOgdraw                         controllers.UtilsController.getCpOgdraw(gb:String)
+POST        /PODB/utils/getLastzTarfetExample               controllers.UtilsController.getLastzTarfetExample
+GET         /PODB/utils/downloadLastzTarfetExample          controllers.UtilsController.downloadLastzTarfetExample
+POST        /PODB/utils/getLastzQueryExample                controllers.UtilsController.getLastzQueryExample
+GET         /PODB/utils/downloadLastzQueryExample           controllers.UtilsController.downloadLastzQueryExample
+
+GET         /US/PODB/tree/tree                              controllers.TreeController.tree
+POST        /PODB/tree/getTreeJson                          controllers.TreeController.getTreeJson
+GET         /PODB/tree/getInfoById                          controllers.TreeController.getInfoById(id: Int,sample:String)
+
+GET         /PODB/upload/uploadBefore                       controllers.UploadController.uploadBefore
+
+GET         /PODB/location/getMapData                       controllers.LocationController.getMapData
+
+GET         /US/PODB/literature/literature                  controllers.HomeController.reference
+
+
+GET         /US/PODB/search/searchBefore                    controllers.SearchController.searchBefore(db:String,input:String)
+GET         /PODB/search/searchByDbInput                    controllers.SearchController.searchByDbInput(db:String,input:String)
+
+GET         /downloadBlastByRange                           controllers.DownloadController.downloadBlastByRange(name:String,range:String,blastType:String)
+GET         /downloadBlastByName                            controllers.DownloadController.downloadBlastByName(name:String,blastType:String)
+
+GET         /insertGene                                     controllers.HomeController.insertGene
+GET         /insertMitochogenome                            controllers.MitochondriaController.insert
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET         /assets/*file                                   controllers.Assets.versioned(path="/public", file: Asset)
+
+      

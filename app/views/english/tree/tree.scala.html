@@ -1,0 +1,153 @@
+@()(implicit session: Session)
+@english.home.main("Taxonomy Tree") {
+
+    <style>
+            .text {
+                text-indent: 2em;
+                font-size: 16px;
+            }
+
+            #content ul li{
+                padding: 10px 10px 10px 15px;
+            }
+
+        .fvgenome{
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .fvgenome img{
+            width: 150px;
+            height: 100px;
+            float: left;
+        }
+
+        .fvgenome div{
+            margin-left: 10px;
+            float: left;
+            margin-top: 20px;
+            height: 100px;
+            width: 450px;
+        }
+
+        .fvgenome a{
+            color: cornflowerblue;
+        }
+    </style>
+
+
+    <hgroup class="page-head">
+        <h2><span>Taxonomy</span> Tree</h2>
+    </hgroup>
+
+    <div id="container" class="clearfix" >
+        <div id="content" class="full-width container">
+
+            <div id="tree" class="col-sm-5" style="height: 600px;
+                overflow: auto;"></div>
+
+            <div id="chart" class="col-sm-7" style="height: 600px;
+                width: 58%;
+                float: right;
+                border: solid 1px #DDDDDD;
+                overflow: auto;
+                padding-top: 10px;
+                padding-left: 30px">
+
+                <h2>Favourite genomes</h2>
+
+                <div class="fvgenome">
+                    <img src='/PODB/utils/getImageByPhotoId?name=1_min.png'>
+                    <div>
+                        <h3><a href="/US/PODB/mitochondria/gbInfo?id=1" target="_blank">Gracilaria salicornia</a></h3>
+                        <h4>MT00001</h4>
+                    </div>
+                </div>
+
+                <div class="fvgenome">
+                    <img src='/PODB/utils/getImageByPhotoId?name=2_min.png'>
+                    <div>
+                        <h3><a href="/US/PODB/mitochondria/gbInfo?id=3" target="_blank">Pyropia haitanensis</a></h3>
+                        <h4>MT00003</h4>
+                    </div>
+                </div>
+
+                <div class="fvgenome">
+                    <img src='/PODB/utils/getImageByPhotoId?name=3_min.png'>
+                    <div  style="">
+                        <h3><a href="/US/PODB/mitochondria/gbInfo?id=4" target="_blank">Pyropia yezoensis</a></h3>
+                        <h4>MT00004</h4>
+                    </div>
+                </div>
+
+                <div class="fvgenome">
+                    <img src='/PODB/utils/getImageByPhotoId?name=4_min.png'>
+                    <div>
+                        <h3><a href="/US/PODB/mitochondria/gbInfo?id=6" target="_blank">Gracilariopsis lemaneiformis</a></h3>
+                        <h4>MT00006</h4>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <script src="@routes.Assets.versioned("bootstrap-treeview/bootstrap-treeview.js")"></script>
+
+    <script>
+            $(function () {
+
+                var index = layer.load(1);
+
+                $.ajax({
+                    url: "@routes.TreeController.getTreeJson()",
+                    type: "post",
+                    dataType: "json",
+                    success: function (result) {
+                        $('#tree').treeview({
+                            data: result,         // 数据源
+                            highlightSelected: true,    //是否高亮选中
+                            emptyIcon: '',   //没有子节点的节点图标
+                            multiSelect: false,    //多选
+                            selectedBackColor: 'undefined',
+                            selectedColor: 'undefined',
+                            showTags: true,
+                            levels: 1
+                        });
+                        layer.close(index);
+                    },
+                    error: function () {
+                        layer.close(index);
+                        swal("错误", "树形结构加载失败。", "error")
+                    }
+                });
+            });
+
+            function getCpInfo(id) {
+                window.open("/US/PODB/chloroplast/gbMoreInfo?id=" + id)
+            }
+
+            function getInfo(id, sample) {
+                window.open("/US/PODB/mitochondria/gbInfo?id=" + id);
+
+/*                $.ajax({
+                    url: "/PODB/tree/getInfoById?id=" + id + "&sample=" + sample,
+                    type: "get",
+                    dataType: "json",
+                    success: function (data) {
+                        $("#introduce").hide();
+                        $("#en_name").empty();
+                        $("#en_name").text(data.name);
+                        $("#info").empty();
+                        $("#info").html(data.html);
+                    }
+                })*/
+            }
+
+
+    </script>
+
+}
+
+

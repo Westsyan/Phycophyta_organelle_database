@@ -1,0 +1,287 @@
+@(key:String)(implicit session: Session)
+@english.home.main("Geographical distribution of ferns in China") {
+
+
+    <hgroup class="page-head">
+        <h2>
+            Geographical distribution of <span>Mitochondria</span> in World
+        </h2>
+    </hgroup>
+
+    <div id="container" class="clearfix">
+        <div id="content" class="full-width">
+            <div class="tabs-container" style="padding: 10px">
+                <div id="worldmap" style="height: 650px;"></div>
+
+                <div style="display: none;" id="showTable">
+                    <div id="toolbar"></div>
+
+                    <table class="display table table-bordered" id="table" data-pagination="true" data-search="true"
+                    data-toolbar="#toolbar" data-page-list="[10, 25, 50, 100, all]" data-search-align="left" data-multiple-search="true"
+                    data-show-export="false" data-export-types="['excel','txt']" data-export-data-type="all"
+                    >
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script src="@routes.Assets.versioned("Highmaps-6.1.0/highmaps.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("Highmaps-6.1.0/exporting.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("Highmaps-6.1.0/data.js")" type="text/javascript"></script>
+    <script>
+
+            $(function () {
+                if("@key" != "0" ){
+                    getInfo("@key");
+
+            }
+
+                $('#table').bootstrapTable({
+                    columns: [
+                        [{
+                            field: "id",
+                            title: "ID",
+                            align: "center",
+                            halign: "center",
+                            valign: "middle",
+                            formatter: function (value, row) {
+                                return "<a href='/US/PODB/mitochondria/moreInfo?id=" + row.id + "' target='_blank' style='color: cornflowerblue;'>" + "MT0000" + row.id + "</a>";
+                            }
+                        },
+                            {
+                                field: "species",
+                                title: "Species",
+                                align: "center",
+                                halign: "center",
+                                valign: "middle",
+                                formatter:function (value,row) {
+                                    return "<a href='javascript:searchSpecies(\"" + row.species + "\")' style='font-style: italic'>" + row.species + "</a>"
+                                }
+                            },{
+                            field: "images",
+                            title: "Images",
+                            align: "center",
+                            halign: "center",
+                            valign: "middle",
+                            width:"200px",
+                            formatter: function (value, row) {
+                                return "<img src='/PODB/utils/getImageByPhotoId?name=" + row.id + "_min.png' style='color: cornflowerblue;'/>"
+                            }
+                        }, {
+                            field: "phylum",
+                            title: "Phylum",
+                            align: "center",
+                            halign: "center",
+                            valign: "middle"
+                        }, {
+                            field: "class",
+                            title: "Class",
+                            align: "center",
+                            halign: "center",
+                            valign: "middle"
+                        }, {
+                            field: "order",
+                            title: "Order",
+                            align: "center",
+                            halign: "center",
+                            valign: "middle"
+                        }, {
+                            field: "family",
+                            title: "Family",
+                            align: "center",
+                            halign: "center",
+                            valign: "middle"
+                        }, {
+                            field: "genus",
+                            title: "Genus",
+                            align: "center",
+                            halign: "center",
+                            valign: "middle",
+                            formatter:function (value,row) {
+                                return "<a href='javascript:searchGenus(\"" + row.genus + "\")' style='font-style: italic'>" + row.genus + "</a>"
+                            }
+                        }, {
+                            field: "location",
+                            title: "Collection places",
+                            align: "center",
+                            halign: "center",
+                            valign: "middle"
+                        }, {
+                            field: "genbank",
+                            title: "Database",
+                            align: "center",
+                            halign: "center",
+                            valign: "middle",
+                            formatter: function (value, row) {
+                                var array = row.genbank.split(";");
+                                var link = row.ncbilink.split(";");
+                                var location = "";
+                                $.each(array, function (index, value) {
+                                    location += "<a target='_blank' href='" + link[index] + "'>" + value + "</a><br/>";
+                                });
+                                return location;
+                            }
+                        }, {
+                            field: "bp",
+                            title: "BP",
+                            align: "center",
+                            halign: "center",
+                            valign: "middle"
+                        }, {
+                            field: "ref_pubmed",
+                            title: "Pubmed",
+                            align: "center",
+                            halign: "center",
+                            valign: "middle"
+                        },
+                            {
+                                field: "ref_journal",
+                                title: "Journal",
+                                align: "center",
+                                halign: "center",
+                                valign: "middle"
+                            },
+                            {
+                                field: "ref_title",
+                                title: "Title",
+                                align: "center",
+                                halign: "center",
+                                valign: "middle"
+                            },
+                            {
+                                field: "ref_authors",
+                                title: "Authors",
+                                align: "center",
+                                halign: "center",
+                                valign: "middle"
+                            }]]
+
+                });
+
+
+                var hiddenArray = ["phylum", "class", "order", "family", "ref_pubmed", "ref_journal", "ref_title"];
+
+                $.each(hiddenArray, function (n, value) {
+                            $('#table').bootstrapTable('hideColumn', value);
+                            $("input:checkbox[value=" + value + "]").attr("checked", false)
+                        }
+                );
+
+
+                // 地图路径，参考 https://img.hcharts.cn/mapdata/index.html
+                var map = getMapName('map'),
+                        url = '/assets/Highmaps-6.1.0/world.js';
+
+                // 动态加载地图数据文件并生成图表。
+                loadScript(url, function(){
+                    // 生成随机数据
+                    var mapdata = Highcharts.maps[map.path],
+                            data = [];
+
+
+                    function drawMap(datas){
+                        Highcharts.each(datas,function (v,i) {
+                            data.push({
+                                'hc-key':v.key,
+                                value:v.num
+                            })
+                        })
+
+                        // 初始化图表
+                        $('#worldmap').highcharts('Map', {
+                            title : {
+                                text : map.cname || map.name
+                            },
+                            subtitle : {
+                                text : ''
+                            },
+                            mapNavigation: {
+                                enabled: true,
+                                enableMouseWheelZoom:false,
+                                buttonOptions: {
+                                    verticalAlign: 'bottom'
+                                }
+                            },
+                            credits: {
+                                enabled: false
+                            },
+                            colorAxis: {
+                                min: 0,
+                                stops: [
+                                    [0, '#EFEFFF'],
+                                    [0.5, Highcharts.getOptions().colors[0]],
+                                    [1, Highcharts.Color(Highcharts.getOptions().colors[0]).brighten(-0.5).get()]
+                                ]
+                            },
+                            series : [{
+                                data : data,
+                                mapData: mapdata,
+                                joinBy: 'hc-key',
+                                name: '物种数',
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                states: {
+                                    hover: {
+                                        color: '#a4edba'
+                                    },
+                                    select: {
+                                        color: 'orange',
+                                        borderColor: 'black',
+                                        dashStyle: 'shortdot'
+                                    }
+                                },
+                                dataLabels: {
+                                    enabled: false,
+                                    format: '{point.name}'
+                                },
+                                point: {
+                                    events: {
+                                        click: function () {
+                                            getInfo(this["hc-key"]);
+                                        }
+                                    }
+                                }
+                            }]
+                        });
+                    }
+
+                    $.ajax({
+                        url:"@routes.LocationController.getWorldData()",
+                        type:"get",
+                        success:function (datas) {
+                            drawMap(datas)
+                        }
+                    })
+
+
+                });
+
+
+            })
+
+
+        function getInfo(obj) {
+            var index = layer.load(1);
+            $.ajax({
+                url: "/US/PODB/mitochondria/getInfoByLocation?location=" + obj,
+                type: "get",
+                dataType: "json",
+                success: function (data) {
+                    $("#table").bootstrapTable('load', data);
+
+                    $("#showTable").show();
+                    layer.close(index);
+                }
+            });
+        }
+
+
+
+    </script>
+
+
+}

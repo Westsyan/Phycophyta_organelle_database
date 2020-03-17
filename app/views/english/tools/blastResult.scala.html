@@ -1,0 +1,57 @@
+@(path: String,types:String)(implicit session: Session)
+
+<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("blast/css/bootstrap.css")">
+<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("blast/css/blast.css")">
+<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("font-awesome-4.7.0/css/font-awesome.min.css")">
+
+<script src="@routes.Assets.versioned("blast/js/jquery-3.1.1.min.js")" type="text/javascript"></script>
+<script src="@routes.Assets.versioned("blast/js/d3.v4.min.js")" type="text/javascript"></script>
+<script src="@routes.Assets.versioned("blast/js/bootstrap.min.js")" type="text/javascript"></script>
+<script src="@routes.Assets.versioned("blast/js/blast.js")" type="text/javascript"></script>
+
+
+<div id="resultContent">
+
+</div>
+
+<script>
+
+        $(function () {
+
+            $.ajax({
+                url: "/PODB/tools/blastResult?path=@path" + "&types=@types",
+                type: "post",
+                success: function (data) {
+                    $("#resultContent").html(data.html);
+                    if ("@types" === "blastnGenome") {
+                        $(".detail-info").hide();
+                        $.each(data.block, function (i, v) {
+                            const id = "#synteny" + v.index;
+                            const data = v.data;
+                            const relate = v.relate;
+                            const index = v.index + "-";
+                            DisplayBlock(id, data, relate, index)
+                        })
+                    } else {
+                        $(".blastDraw").hide();
+                    }
+                }
+            })
+
+        });
+
+
+        function toMoreInfo(name) {
+            window.open("/US/PODB/mitochondria/moreGeneInfo?gene=GeneId" + name);
+        }
+
+        function DownByName(name) {
+            window.location.href="/downloadBlastByName?name=" + name +"&blastType=@types" ;
+        }
+
+        function DownByRange(name,obj){
+            window.location.href="/downloadBlastByRange?name=" + name + "&range=" + $("."+obj).text() + "&blastType=@types";
+        }
+
+
+</script>

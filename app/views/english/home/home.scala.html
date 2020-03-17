@@ -1,0 +1,395 @@
+@()(implicit session: Session)
+@english.home.main("Phycophyta Organelle Database") {
+    <link rel="stylesheet" href="@routes.Assets.versioned("img-carousel/carousel.css")">
+
+
+    <div id="container" style="margin-top: 50px;">
+
+        <div class="official clearfix">
+
+            <div class="home-left-side">
+                <section class="team clearfix">
+                    <h2 class="smart-head" style="margin-bottom: 10px;">Phycophyta Organelle Database</h2>
+                    <p>Algae are a group of protists called eukaryotes (some are prokaryotes, such as the algae
+                        of the cyanophyta).Mainly aquatic, it has no vascular bundles and can carry out photosynthesis.
+                        It varies in size from dinoflagellates as small as 1 micron in length to large brown algae as
+                        long as 60 meters in length.Some leading experts continue to classify algae as plants or
+                        plant-like organisms, but algae have no real roots, stems, leaves, or vascular bundles.
+                        That's the same thing as bryophyte.</p>
+                    <p>Some algae, like other eukaryotes, have nuclei, membranous vacuoles, and organelles
+                        (such as mitochondria). Most algae need oxygen to live.Photosynthesis is performed using
+                        various chloroplast molecules, such as chlorophyll, carotenoids, and algal bile proteins.
+                        Algae are responsible for 90 per cent of photosynthesis on earth and are believed to
+                        have played an important role in creating an oxygen-rich environment during the planet's
+                        early history.</p>
+                </section>
+
+                <section>
+
+                    <form method="get" action="/US/PODB/search/searchBefore">
+
+                        <select style="float: left;
+                            height: 35px;
+                            width: 180px" class="form-control" name="db">
+                            <option value="all" selected>All Database</option>
+                            <option value="cp">Chloroplast Genome</option>
+                            <option value="mt">Mitochondria Genome</option>
+                        </select>
+
+                        <input type="text" class="form-control" name="input"
+                            placeholder="Keyword"
+                            id="searchInfo" style="height: 35px;
+                            width: 560px;
+                            float: left;
+                            margin-left: 10px">
+                        <button type="submit"  class="btn btn-primary" style="top: 3px;
+                            right: 14px;
+                            font-size: 15px;
+                            height: 35px;">Search <i class="fa fa-search"></i> </button>
+                        <span class="help-block" style="margin-left: 190px">
+                            e.g.,&nbsp;<a href="#" onclick="showSearchExample()" class="resLink"><em id="egSearch">
+                            example</em></a></span>
+                    </form>
+
+                </section>
+
+
+                <section>
+                    <h2 class="smart-head" style="margin-bottom: 10px;
+                        margin-top: 20px;">Geographical distribution</h2>
+                    <div id="worldmap">加载地图数据中</div>
+
+
+                   @* <ul class="services">
+                        <li class="service">
+                            <figure class="service-thumb"><a href="#">
+                                <i class="fa fa-wrench" style="font-size: 100px"></i></a>
+                            </figure>
+                            <h4><a href="@routes.ToolsController.blastBefore()">BLAST</a></h4>
+                            <p>BLAST (basic local alignment search tool) is an algorithm for comparing primary biological
+                                sequence information, such as the amino-acid sequences of proteins or the nucleotides of
+                                DNA and/or RNA sequences.</p>
+                        </li>
+                        <li class="service">
+                            <figure class="service-thumb"><a href="#">
+                                <i class="fa fa-circle-o" style="font-size: 100px"></i></a>
+                            </figure>
+                            <h4><a href="#">Synteny</a></h4>
+                            <p>In classical genetics, synteny describes the physical co-localization of genetic loci on
+                                the same chromosome within an individual or species.</p>
+                        </li>
+                        <li class="service">
+                            <figure class="service-thumb"><a href="#">
+                                <i class="fa fa-upload" style="font-size: 100px"></i></a>
+                            </figure>
+                            <h4><a href="#">Upload</a></h4>
+                            <p>Submit data in accordance with NCBI mode.Similar to NCBI upload process.Support domestic
+                                database</p>
+                        </li>
+                        <li class="service">
+                            <figure class="service-thumb"><a href="@routes.DownloadController.downloadBeforeUS()">
+                                <i class="fa fa-download" style="font-size: 100px"></i></a>
+                            </figure>
+                            <h4><a href="#">Download</a></h4>
+                            <p>It supports the downloading of full data, batch downloading of groups (phylum, class, order,
+                                family, genus) and species, and selection of related genes (amino acids and nucleotides) to
+                                support the comprehensive search function.</p>
+                        </li>
+                        <li class="service">
+                            <figure class="service-thumb"><a href="#">
+                                <i class="fa fa-area-chart" style="font-size: 100px"></i></a>
+                            </figure>
+                            <h4><a href="#">Statistics</a></h4>
+                            <p>Statistical analysis of data, including the number of data species (phylum, class, order,
+                                family, genus and species), source (according to completion unit, completion person and
+                                country), total data (Gb), total coding gene number, tRNA, rRNA, etc</p>
+                        </li>
+                    </ul>*@
+                </section>
+
+            </div>
+                <!-- home left side -->
+
+            <aside id="sidebar">
+
+                <div class="box">
+                    <div class="box-1">
+                        <ul>
+                            <li><a href="/US/PODB/mitochondria/moreInfo?id=1" target="_blank">
+                                <img src="/PODB/utils/getImageByPhotoId?name=1_min.png" />
+                                <h2>Gracilaria salicornia</h2>
+                            </a>
+                            </li>
+                            <li><a href="/US/PODB/mitochondria/moreInfo?id=2" target="_blank">
+                                <img src="/PODB/utils/getImageByPhotoId?name=2_min.png" />
+                                <h2>Pyropia haitanensis</h2>
+                            </a>
+                            </li>
+                            <li><a href="/US/PODB/mitochondria/moreInfo?id=3" target="_blank">
+                                <img src="/PODB/utils/getImageByPhotoId?name=3_min.png" />
+                                <h2>Pyropia yezoensis</h2>
+                            </a>
+                            </li>
+                            <li><a href="/US/PODB/mitochondria/moreInfo?id=4" target="_blank">
+                                <img src="/PODB/utils/getImageByPhotoId?name=4_min.png" />
+                                <h2>Gracilariopsis lemaneiformis</h2>
+                            </a>
+                            </li>
+                            <li><a href="/US/PODB/mitochondria/moreInfo?id=5" target="_blank">
+                                <img src="/PODB/utils/getImageByPhotoId?name=5_min.png" />
+                                <h2>Gracilaria chorda </h2>
+                            </a>
+                            </li>
+                            <li><a href="/US/PODB/mitochondria/moreInfo?id=6" target="_blank">
+                                <img src="/PODB/utils/getImageByPhotoId?name=6_min.png" />
+                                <h2>Palmaria palmata</h2>
+                            </a>
+                            </li>
+                            <li><a href="/US/PODB/mitochondria/moreInfo?id=7" target="_blank">
+                                <img src="/PODB/utils/getImageByPhotoId?name=7_min.png" />
+                                <h2>Kappaphycus alvarezii</h2>
+                            </a>
+                            </li>
+                            <li><a href="/US/PODB/mitochondria/moreInfo?id=8" target="_blank">
+                                <img src="/PODB/utils/getImageByPhotoId?name=8_min.png" />
+                                <h2>Eucheuma denticulatum</h2>
+                            </a>
+                            </li>
+                            <li><a href="/US/PODB/mitochondria/moreInfo?id=9" target="_blank">
+                                <img src="/PODB/utils/getImageByPhotoId?name=9_min.png" />
+                                <h2>Chondrus crispus </h2>
+                            </a>
+                            </li>
+                            <li><a href="/US/PODB/mitochondria/moreInfo?id=10" target="_blank">
+                                <img src="/PODB/utils/getImageByPhotoId?name=10_min.png" />
+                                <h2>Grateloupia filicina</h2>
+                            </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+
+                <style>
+                        .rpanel {
+                            margin-top: 20px;
+                            border: 1px solid #ddd;
+                            box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+                            border-radius: 5px;
+                        }
+
+                        .rpanel-header {
+                            background-color: #5AABBC;
+                            height: 40px;
+                            line-height: 40px;
+                            padding-left: 15px;
+                        }
+
+                        .rpanel-title {
+                            color: white;
+                        }
+
+                        .rpanel-body {
+                            padding: 15px 15px 0 15px;
+                        }
+
+                        .ui.big.label {
+                            font-size: 16px;
+                        }
+
+                </style>
+
+
+                <div class="ui raised segment">
+                    <h4 class="text-primary"><span class="ui teal ribbon label big"><i class="fas fa-chart-pie"></i>
+                        Data Statistics</span>
+                    </h4>
+                    <br>
+                    <p><i class="fa fa-chevron-circle-right"></i> Chloroplast Genomes: <a href="@routes.MitochondriaController.mitochondriaGenomeBefore()" target="_blank" style='color: cornflowerblue;'>300+</a></p>
+                    <p><i class="fa fa-chevron-circle-right"></i> Mitochondria Genomes: <a href="@routes.MitochondriaController.mitochondriaGenomeBefore()" target="_blank" style='color: cornflowerblue;'>300+</a></p>
+                    <p><i class="fa fa-chevron-circle-right"></i> Germplasm Resources: <a  href="@routes.MitochondriaController.mapBefore("0")" target="_blank" style='color: cornflowerblue;'>700+</a></p>
+                </div>
+
+                <div class="ui raised segment">
+                    <h4 class="text-primary"><span class="ui teal ribbon label big"><i class="fas fa-chart-pie"></i>
+                        Release Notes </span>
+                    </h4>
+                    <br>
+                    <p><i class="fa fa-chevron-circle-right"></i>
+                        Phycophyta Organelle database is available online on June 2019.</p>
+
+                </div>
+
+                <div class="rpanel" style="display: none">
+                    <div class="rpanel-header">
+                        <h3 class="rpanel-title">Release Notes</h3>
+                    </div>
+                    <div class="rpanel-body">
+
+                        <p><i class="fa fa-chevron-circle-right"></i>
+                            Phycophyta Organelle database is available online on June 2019.</p>
+
+                    </div>
+                </div>
+
+            </aside>
+
+        </div>
+
+
+        <div id="content" class="full-width"></div>
+
+
+    </div>
+        <!-- end of container -->
+
+    <script src="@routes.Assets.versioned("img-carousel/carousel.js")" type="text/javascript"></script>
+
+    <script src="@routes.Assets.versioned("Highmaps-6.1.0/highmaps.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("Highmaps-6.1.0/exporting.js")" type="text/javascript"></script>
+    <script>
+
+        function showSearchExample() {
+            $("#searchInfo").val("Rhodophyta Bangiophyceae");
+        }
+
+
+
+        // 动态加载 Script
+        function loadScript(url, callback){
+            var script = document.createElement("script");
+            script.type = "text/javascript";
+            if (script.readyState){  //IE
+                script.onreadystatechange = function(){
+                    if (script.readyState == "loaded" ||
+                            script.readyState == "complete"){
+                        script.onreadystatechange = null;
+                        callback();
+                    }
+                };
+            } else {  //Others
+                script.onload = function(){
+                    callback();
+                };
+            }
+            script.src = url;
+            document.getElementsByTagName("head")[0].appendChild(script);
+        }
+        /*
+         * 获取链接的 map 参数
+         * map 参数值为地图的路径，所有文件路径参考 https://img.hcharts.cn/mapdata/index.html
+         */
+        function getMapName(name) {
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"),
+                    r = window.location.search.substr(1).match(reg),
+                    defaultMap = {
+                        path: 'custom/world',
+                        name: ' '
+                    };
+            if(r!==null) {
+                var path = unescape(r[2]);
+                for(var key in Highcharts.mapsInfo) {
+                    if(Highcharts.mapsInfo[key][path]) {
+                        return {
+                            path: path,
+                            name: Highcharts.mapsInfo[key][path].name,
+                            cname: Highcharts.mapsInfo[key][path].chineseName || ''
+                        };
+                    }
+                }
+            }
+            return defaultMap;
+        }
+        // 地图路径，参考 https://img.hcharts.cn/mapdata/index.html
+        var map = getMapName('map'),
+                url = '/assets/Highmaps-6.1.0/world.js';
+
+
+
+        // 动态加载地图数据文件并生成图表。
+        loadScript(url, function(){
+            // 生成随机数据
+            var mapdata = Highcharts.maps[map.path],
+                    data = [];
+
+            $.ajax({
+                url:"@routes.LocationController.getWorldData()",
+                type:"get",
+                success:function (datas) {
+                    Highcharts.each(datas,function (v,i) {
+                        data.push({
+                            'hc-key':v.key,
+                            value:v.num
+                        })
+                    })
+
+                    // 初始化图表
+                    $('#worldmap').highcharts('Map', {
+                        title : {
+                            text : map.cname || map.name
+                        },
+                        subtitle : {
+                            text : ''
+                        },
+                        mapNavigation: {
+                            enabled: true,
+                            enableMouseWheelZoom:false,
+                            buttonOptions: {
+                                verticalAlign: 'bottom'
+                            }
+                        },
+                        credits: {
+                            enabled: false
+                        },
+                        colorAxis: {
+                            min: 0,
+                            stops: [
+                                [0, '#EFEFFF'],
+                                [0.5, Highcharts.getOptions().colors[0]],
+                                [1, Highcharts.Color(Highcharts.getOptions().colors[0]).brighten(-0.5).get()]
+                            ]
+                        },
+                        series : [{
+                            data : data,
+                            mapData: mapdata,
+                            joinBy: 'hc-key',
+                            name: '物种数',
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            states: {
+                                hover: {
+                                    color: '#a4edba'
+                                },
+                                select: {
+                                    color: 'orange',
+                                    borderColor: 'black',
+                                    dashStyle: 'shortdot'
+                                }
+                            },
+                            dataLabels: {
+                                enabled: false,
+                                format: '{point.name}'
+                            },
+                            point: {
+                                events: {
+                                    click: function () {
+                                        window.open("/US/PODB/mitochondria/mapBefore?key=" + this["hc-key"] + "#showTable")
+                                    }
+                                }
+                            }
+                        }]
+                    });
+
+                }
+            })
+
+
+        });
+
+
+
+
+    </script>
+
+}
